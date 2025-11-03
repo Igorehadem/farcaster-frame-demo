@@ -57,7 +57,7 @@ export default async function handler(req) {
   }
 
   // Default GET (first frame)
-  const imageUrl = `${base}/frame.png`;
+  const imageUrl = `${base}/frame_v2.png`;
   const postUrl = `${base}/api/tx`;
 
   const html = `
