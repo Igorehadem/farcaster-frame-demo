@@ -1,8 +1,6 @@
-export const config = {
-  runtime: "edge",
-};
+export const config = { runtime: "edge" };
 
-export default async function handler(req, res) {
+export default async function handler() {
   const tx = {
     chain: "base-sepolia",
     method: "eth_sendTransaction",
@@ -15,7 +13,7 @@ export default async function handler(req, res) {
     ],
   };
 
-  res.status(200).json({
+  const body = JSON.stringify({
     frame: {
       version: "next",
       title: "Base Sepolia Demo",
@@ -23,5 +21,10 @@ export default async function handler(req, res) {
       post_url: "/api/frame",
       transactions: [tx],
     },
+  });
+
+  return new Response(body, {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
   });
 }
