@@ -1,22 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
   reactStrictMode: true,
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
-  // 🚫 отключаем static export вообще
-  // и говорим Next.js не трогать API routes
-  target: 'server',
-  outputFileTracing: true,
+  // ⚙️ ключевой момент: только серверная сборка
+  output: 'standalone',
+  distDir: '.next',
   trailingSlash: false,
 
-  // 🧩 удаляем все /api/* маршруты из exportPathMap
+  // 🚫 полностью отключаем static export
+  // и явно убираем API маршруты из генерации
   exportPathMap: async (defaultPathMap) => {
     Object.keys(defaultPathMap).forEach((key) => {
       if (key.startsWith('/api')) delete defaultPathMap[key];
     });
     return defaultPathMap;
+  },
+  // ⛔️ запрет любых попыток prerender API
+  async redirects() {
+    return [
+      { source: '/pages/api/:path*', destination: '/api/:path*', permanent: true },
+    ];
   },
 };
 
