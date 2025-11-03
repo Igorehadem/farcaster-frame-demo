@@ -5,18 +5,19 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
-  // 👇 запрещаем static export API routes
-  exportPathMap: async function (defaultPathMap) {
-    // Удаляем все /api/* маршруты, чтобы Next не пытался их рендерить
-    const filtered = Object.keys(defaultPathMap).reduce((acc, key) => {
-      if (!key.startsWith('/api/')) acc[key] = defaultPathMap[key];
-      return acc;
-    }, {});
-    return filtered;
-  },
+  // 💡 Отключаем статический экспорт — это ключевая строка!
+  outputFileTracing: true,
+  trailingSlash: false,
 
-  // Дополнительно блокируем prerender ошибок
-  generateBuildId: async () => 'build-' + Date.now(),
+  // 💡 Убираем API-роуты из экспорта
+  exportPathMap: async function (defaultPathMap) {
+    for (const key of Object.keys(defaultPathMap)) {
+      if (key.startsWith('/api')) {
+        delete defaultPathMap[key];
+      }
+    }
+    return defaultPathMap;
+  },
 };
 
 export default nextConfig;
