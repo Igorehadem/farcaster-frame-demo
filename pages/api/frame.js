@@ -1,6 +1,5 @@
-// 🧱 File: pages/api/frame.js
 export const config = {
-  runtime: "edge", // 💡 это указывает Vercel, что это edge/serverless функция
+  runtime: "edge", // Force serverless execution
 };
 
 export default async function handler(req, res) {
