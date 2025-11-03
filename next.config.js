@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
-
-  // 
+  // Cloudflare Pages supports Edge runtime automatically
   output: 'standalone',
-
- 
+  experimental: {},
+  reactStrictMode: true,
 };
 
-export default nextConfig;
+module.exports = nextConfig;
