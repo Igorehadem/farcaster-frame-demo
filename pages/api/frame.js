@@ -23,17 +23,17 @@ function getRandomPrediction() {
   return predictions[i];
 }
 
-export default async function handler(req) {
+export default async function handler(req: Request) {
   const url = new URL(req.url);
   const base = `${url.protocol}//${url.host}`;
-  const imageBase = `${base}/api/og`;
-  const timestamp = Date.now().toString(); // cache-buster
+  const timestamp = Date.now().toString();
 
-  // POST — after Base tx confirmed
+  // POST: after Base transaction confirmed
   if (req.method === "POST") {
     const prediction = getRandomPrediction();
     const encoded = encodeURIComponent(prediction);
-    const imageUrl = `${imageBase}?text=${encoded}&v=${timestamp}`;
+    const imageUrl = `${base}/api/og?text=${encoded}&v=${timestamp}`;
+    const txUrl = `${base}/api/tx?v=${timestamp}`;
 
     const html = `
       <html>
@@ -42,23 +42,30 @@ export default async function handler(req) {
           <meta property="og:title" content="Your Fate 🪄" />
           <meta property="og:description" content="${prediction}" />
           <meta property="og:image" content="${imageUrl}" />
+
           <meta property="fc:frame" content="vNext" />
           <meta property="fc:frame:image" content="${imageUrl}" />
-          <meta property="fc:frame:button:1" content="Try Again" />
-          <meta property="fc:frame:post_url" content="${base}/api/tx?v=${timestamp}" />
+
+          <meta property="fc:frame:button:1" content="🔮 Try Again" />
+          <meta property="fc:frame:button:1:action" content="tx" />
+          <meta property="fc:frame:button:1:target" content="${txUrl}" />
         </head>
         <body></body>
       </html>
     `;
+
     return new Response(html, {
       status: 200,
-      headers: { "Content-Type": "text/html; charset=utf-8" },
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=60"
+      },
     });
   }
 
-  // GET — first frame
+  // GET: initial frame
   const imageUrl = `${base}/frame_v2.png?v=${timestamp}`;
-  const postUrl = `${base}/api/tx?v=${timestamp}`;
+  const txUrl = `${base}/api/tx?v=${timestamp}`;
 
   const html = `
     <html>
@@ -67,10 +74,13 @@ export default async function handler(req) {
         <meta property="og:title" content="Predict your fate 🪄" />
         <meta property="og:description" content="Press to summon your Base prediction" />
         <meta property="og:image" content="${imageUrl}" />
+
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="${imageUrl}" />
+
         <meta property="fc:frame:button:1" content="Summon Base Tx" />
-        <meta property="fc:frame:post_url" content="${postUrl}" />
+        <meta property="fc:frame:button:1:action" content="tx" />
+        <meta property="fc:frame:button:1:target" content="${txUrl}" />
       </head>
       <body></body>
     </html>
@@ -78,6 +88,9 @@ export default async function handler(req) {
 
   return new Response(html, {
     status: 200,
-    headers: { "Content-Type": "text/html; charset=utf-8" },
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=60"
+    },
   });
 }
