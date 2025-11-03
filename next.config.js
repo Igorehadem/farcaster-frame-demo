@@ -3,25 +3,27 @@ const nextConfig = {
   reactStrictMode: true,
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-
-  // ⚙️ ключевой момент: только серверная сборка
   output: 'standalone',
-  distDir: '.next',
-  trailingSlash: false,
 
-  // 🚫 полностью отключаем static export
-  // и явно убираем API маршруты из генерации
-  exportPathMap: async (defaultPathMap) => {
-    Object.keys(defaultPathMap).forEach((key) => {
-      if (key.startsWith('/api')) delete defaultPathMap[key];
-    });
-    return defaultPathMap;
+  // 🧩 полностью исключаем pages/api из сборки
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push(function ({ context, request }, callback) {
+        if (request && request.startsWith('./pages/api')) {
+          return callback(null, 'commonjs ' + request);
+        }
+        callback();
+      });
+    }
+    return config;
   },
-  // ⛔️ запрет любых попыток prerender API
-  async redirects() {
-    return [
-      { source: '/pages/api/:path*', destination: '/api/:path*', permanent: true },
-    ];
+
+  // 💡 если вдруг кто-то попытается экспортировать — удаляем API-маршруты
+  exportPathMap: async (defaultPathMap) => {
+    for (const key of Object.keys(defaultPathMap)) {
+      if (key.startsWith('/api')) delete defaultPathMap[key];
+    }
+    return defaultPathMap;
   },
 };
 
