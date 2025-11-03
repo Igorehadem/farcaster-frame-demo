@@ -7,11 +7,7 @@ const nextConfig = {
   // 
   output: 'standalone',
 
-  // 
-  experimental: {
-    serverActions: false,
-    appDir: false,
-  },
+ 
 };
 
 export default nextConfig;
