@@ -23,7 +23,7 @@ function getRandomPrediction() {
   return predictions[i];
 }
 
-export default async function handler(req: Request) {
+export default async function handler(req) {
   const url = new URL(req.url);
   const base = `${url.protocol}//${url.host}`;
   const timestamp = Date.now().toString();
