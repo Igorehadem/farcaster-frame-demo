@@ -25,7 +25,7 @@ export default async function handler() {
       {
         to: CONTRACT_ADDRESS,
         value: "0x0",
-        data: `0x${calldata}`,
+        data: calldata,
       },
     ],
   };
