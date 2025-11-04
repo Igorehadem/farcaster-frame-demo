@@ -12,7 +12,9 @@ export default async function handler(req) {
     <html>
       <head>
         <meta name="robots" content="noindex,nofollow" />
-        <meta property="fc:frame" content="1" />
+        <meta property="fc:frame" content="vNext" />
+        <meta property="fc:frame:version" content="1" />
+        <meta property="fc:frame:image:aspect_ratio" content="1:1" />
         <meta property="og:title" content="Predict your fate 🪄" />
         <meta property="og:description" content="Press to summon your Base prediction" />
         <meta property="og:image" content="${imageUrl}" />
