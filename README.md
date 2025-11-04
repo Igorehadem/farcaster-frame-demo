@@ -1,4 +1,4 @@
-# Farcaster Frame Demo (Base Sepolia)
+# Farcaster Frame Demo (Base)
 
 Minimal Warpcast Frame that triggers an onchain transaction on Base Sepolia.  
 Public & forkable. No secrets in repo.
