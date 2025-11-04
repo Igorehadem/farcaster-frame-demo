@@ -12,13 +12,18 @@ export default async function handler(req) {
     <html>
       <head>
         <meta name="robots" content="noindex,nofollow" />
+
+        <!-- ✅ Обновлённые Farcaster Frame теги -->
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:version" content="1" />
         <meta property="fc:frame:image:aspect_ratio" content="1:1" />
+
+        <!-- OpenGraph -->
         <meta property="og:title" content="Predict your fate 🪄" />
         <meta property="og:description" content="Press to summon your Base prediction" />
         <meta property="og:image" content="${imageUrl}" />
 
+        <!-- Frame meta -->
         <meta property="fc:frame:image" content="${imageUrl}" />
         <meta property="fc:frame:button:1" content="Summon Base Tx" />
         <meta property="fc:frame:button:1:action" content="tx" />
