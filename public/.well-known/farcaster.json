@@ -1,0 +1,12 @@
+{
+  "name": "Base Caster Lab",
+  "description": "Experimental Base + Farcaster Lab — explore, log and analyze onchain events.",
+  "icon_url": "https://igoreha.online/frame_v2.png",
+  "home_url": "https://igoreha.online",
+  "allowed_origins": ["https://igoreha.online"],
+  "contact": {
+    "email": "builder@igoreha.online",
+    "twitter": "https://warpcast.com/igorehadem"
+  }
+}
+
