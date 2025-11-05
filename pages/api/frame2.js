@@ -1,31 +1,55 @@
 export const config = { runtime: "edge" };
 
+const CONTRACT_ADDRESS =
+  process.env.CONTRACT_ADDRESS ||
+  "0x0a827a81C2Dd01acc9fE1E3a8F7c7CB753F7405F";
+
+// keccak256("predict(string)") = 0x2cde5c80
+const SELECTOR_PREDICT = "0x2cde5c80";
+
 export default async function handler(req) {
-  const url = new URL(req.url);
-  const base = `${url.protocol}//${url.host}`;
-  const timestamp = Date.now().toString();
-  const imageUrl = `${base}/frame_v2.png?v=${timestamp}`;
-  const txUrl = `${base}/api/tx?v=${timestamp}`;
+  const base = `https://${req.headers.get("host")}`;
 
-  const html = `
-  <html>
-    <head>
-      <meta name="robots" content="noindex,nofollow" />
-      <meta property="fc:frame" content="vNext" />
-      <meta property="fc:frame:image" content="${imageUrl}" />
-      <meta property="fc:frame:button:1" content="Summon Base Tx" />
-      <meta property="fc:frame:button:1:action" content="tx" />
-      <meta property="fc:frame:button:1:target" content="${txUrl}" />
-    </head>
-    <body></body>
-  </html>
-  `;
+  // динамический контент
+  const fateNumber = Math.floor(Math.random() * 9999) + 1;
+  const message = `Fate #${fateNumber}`;
+  const messageHex = Buffer.from(message, "utf8").toString("hex");
+  const messagePadded = messageHex.padEnd(64 * 2, "0");
+  const calldata = `${SELECTOR_PREDICT}${messagePadded}`;
 
-  const headers = new Headers();
-  headers.set("Content-Type", "text/html; charset=utf-8");
-  headers.set("Cache-Control", "no-store");
-  headers.set("CDN-Cache-Control", "no-store");
-  headers.set("X-Content-Type-Options", "nosniff");
+  const body = {
+    version: "next",
+    title: "Predict your Fate ⚡",
+    image: `${base}/frame_v2.png?v=${Date.now()}`,
+    buttons: [
+      {
+        label: "Summon Base Tx",
+        action: "tx",
+        target: `${base}/api/tx`,
+      },
+    ],
+    chain: "base",
+    post_url: `${base}/api/frame`,
+    transactions: [
+      {
+        chain: "base",
+        method: "eth_sendTransaction",
+        params: [
+          {
+            to: CONTRACT_ADDRESS,
+            value: "0x0",
+            data: calldata,
+          },
+        ],
+      },
+    ],
+  };
 
-  return new Response(html, { status: 200, headers });
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    },
+  });
 }
