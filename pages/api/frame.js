@@ -14,14 +14,13 @@ export default async function handler(req) {
       <meta name="robots" content="noindex,nofollow" />
       <meta property="fc:frame" content="vNext" />
       <meta property="fc:frame:image" content="${imageUrl}" />
-      <meta property="fc:frame:post_url" content="${base}/api/frame" />
       <meta property="fc:frame:button:1" content="Summon Base Tx" />
       <meta property="fc:frame:button:1:action" content="tx" />
       <meta property="fc:frame:button:1:target" content="${txUrl}" />
     </head>
     <body></body>
   </html>
-`;
+  `;
 
   return new Response(html, {
     status: 200,
