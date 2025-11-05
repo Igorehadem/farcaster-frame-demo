@@ -20,7 +20,7 @@ export default async function handler(req) {
   const calldata = `${SELECTOR_PREDICT}${messagePadded}`;
 
   const tx = {
-    chain: "base-mainnet",
+    chain: "base", // ✅ use 'base' instead of 'base-mainnet'
     method: "eth_sendTransaction",
     params: [
       {
@@ -31,14 +31,15 @@ export default async function handler(req) {
     ],
   };
 
-  // Warpcast expects top-level object with fields directly, not nested
+  // ✅ align with frame version (vNext)
   const responseBody = {
-    version: "next",
+    version: "vNext",
     title: "Predict your Fate",
     image: `${base}/frame_v2.png?v=${Date.now()}`,
+    chain: "base", // ✅ explicitly include chain
+    transactions: [tx],
     buttons: [{ label: "Confirm Prediction" }],
     post_url: postUrl,
-    transactions: [tx],
   };
 
   return new Response(JSON.stringify(responseBody), {
