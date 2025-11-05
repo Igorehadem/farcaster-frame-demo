@@ -12,11 +12,9 @@ export default async function handler(req) {
   <html>
     <head>
       <meta name="robots" content="noindex,nofollow" />
-      <meta property="fc:frame" content="1" />
-      <meta property="og:title" content="Predict your fate 🪄" />
-      <meta property="og:description" content="Press to summon your Base prediction" />
-      <meta property="og:image" content="${imageUrl}" />
+      <meta property="fc:frame" content="vNext" />
       <meta property="fc:frame:image" content="${imageUrl}" />
+      <meta property="fc:frame:post_url" content="${base}/api/frame" />
       <meta property="fc:frame:button:1" content="Summon Base Tx" />
       <meta property="fc:frame:button:1:action" content="tx" />
       <meta property="fc:frame:button:1:target" content="${txUrl}" />
@@ -28,8 +26,9 @@ export default async function handler(req) {
   return new Response(html, {
     status: 200,
     headers: {
-      "Content-Type": "text/html",
+      "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "no-store",
+      "CDN-Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
     },
   });
