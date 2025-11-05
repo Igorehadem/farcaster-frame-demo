@@ -12,7 +12,6 @@ export default async function handler(req) {
   const base = `${url.protocol}//${url.host}`;
   const postUrl = `${base}/api/frame`;
 
-  // Generate random Fate
   const fateNumber = Math.floor(Math.random() * 9999) + 1;
   const message = `Fate #${fateNumber}`;
   const messageHex = Buffer.from(message, "utf8").toString("hex");
@@ -20,7 +19,7 @@ export default async function handler(req) {
   const calldata = `${SELECTOR_PREDICT}${messagePadded}`;
 
   const tx = {
-    chain: "base", // ✅ use 'base' instead of 'base-mainnet'
+    chain: "base", // только внутри
     method: "eth_sendTransaction",
     params: [
       {
@@ -31,12 +30,10 @@ export default async function handler(req) {
     ],
   };
 
-  // ✅ align with frame version (vNext)
   const responseBody = {
     version: "vNext",
     title: "Predict your Fate",
     image: `${base}/frame_v2.png?v=${Date.now()}`,
-    chain: "base", // ✅ explicitly include chain
     transactions: [tx],
     buttons: [{ label: "Confirm Prediction" }],
     post_url: postUrl,
