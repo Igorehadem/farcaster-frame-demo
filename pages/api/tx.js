@@ -10,7 +10,7 @@ const SELECTOR_PREDICT = "0x2cde5c80";
 export default async function handler(req) {
   const url = new URL(req.url);
   const base = `${url.protocol}//${url.host}`;
-  const postUrl = `${base}/api/frame`;
+  const timestamp = Date.now().toString();
 
   const fateNumber = Math.floor(Math.random() * 9999) + 1;
   const message = `Fate #${fateNumber}`;
@@ -19,7 +19,7 @@ export default async function handler(req) {
   const calldata = `${SELECTOR_PREDICT}${messagePadded}`;
 
   const tx = {
-    chain: "base", // только внутри
+    chain: "base",
     method: "eth_sendTransaction",
     params: [
       {
@@ -32,15 +32,17 @@ export default async function handler(req) {
 
   const responseBody = {
     version: "vNext",
-    title: "Predict your Fate",
-    image: `${base}/frame_v2.png?v=${Date.now()}`,
+    image: `${base}/frame_v2.png?v=${timestamp}`,
     transactions: [tx],
-    buttons: [{ label: "Confirm Prediction" }],
-    post_url: postUrl,
+    buttons: [{ label: "Confirm Prediction" }]
   };
 
   return new Response(JSON.stringify(responseBody), {
     status: 200,
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      "CDN-Cache-Control": "no-store",
+    },
   });
 }
