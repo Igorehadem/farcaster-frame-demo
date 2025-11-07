@@ -1,9 +1,10 @@
+import { getBaseUrl, getTimestamp } from "../../lib/utils.js";
 export const config = { runtime: "edge" };
 
 export default async function handler(req) {
-  const url = new URL(req.url);
-  const base = `${url.protocol}//${url.host}`;
-  const ts = Date.now();
+  const base = getBaseUrl(req);
+  const timestamp = getTimestamp();
+
 
   const image = `${base}/frame_v2.png?v=${ts}`;
   const tx = `${base}/api/tx?v=${ts}`;
