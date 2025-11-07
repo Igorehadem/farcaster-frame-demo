@@ -1,3 +1,4 @@
+// This API route runs on the Vercel Edge Runtime for low latency responses
 export const config = { runtime: "edge" };
 
 const CONTRACT_ADDRESS =
