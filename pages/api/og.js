@@ -3,6 +3,7 @@ import { ImageResponse } from "@vercel/og";
 export const config = { runtime: "edge" };
 
 // Use @vercel/og to render a starry background with centered text
+// Render a dynamic Open Graph image for Farcaster Frame using @vercel/og
 export default async function handler(req) {
   const { searchParams } = new URL(req.url);
   const text = searchParams.get("text") || "Your Fate Awaits";
