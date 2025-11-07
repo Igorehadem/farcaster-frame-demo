@@ -6,7 +6,7 @@ export const config = { runtime: "edge" };
 // Render a dynamic Open Graph image for Farcaster Frame using @vercel/og
 export default async function handler(req) {
   const { searchParams } = new URL(req.url);
-  const text = searchParams.get("text") || "Your Fate Awaits";
+  const text = searchParams.get("text")?.trim() || "Your Fate Awaits";
 
   return new ImageResponse(
     (
