@@ -2,13 +2,13 @@
   "name": "Base Caster Lab",
   "description": "Experimental Base + Farcaster Lab — explore, log and analyze onchain events.",
   "icon_url": "https://igoreha.online/frame_v2.png",
-  "home_url": "https://igoreha.online/api/frame",
+  "home_url": "https://igoreha.online/api/frame-input",
   "allowed_origins": ["https://igoreha.online"],
   "contact": {
     "email": "demidovigor90@gmail.com",
     "twitter": "https://x.com/DemidovIgorS",
     "farcaster": "https://farcaster.xyz/igoreha"
- },
+  },
   "accountAssociation": {
     "header": "eyJmaWQiOjU3OTY5OSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDU2RjNCNTMwZDMxYWU1YjQyMDU2YjRDRDhkMjc4M2M0ZWFiYjIzQzcifQ",
     "payload": "eyJkb21haW4iOiJpZ29yZWhhLm9ubGluZSJ9",
